@@ -126,11 +126,13 @@ public:
     }
 
 public: // public interface
-    void insert(const _key_t & k, uint64_t v) { 
+    void insert(const _key_t & k, uint64_t v) {
+        // 根据k在上层索引中找，找到的val即为指向下层数据节点的指针
         Node ** root_ptr = (Node **)uptree_->find_lower(k);
         Node * downroot = (Node *)galc->absolute(*root_ptr);
  
         // travese in sibling chain
+        // 顺着sibling链找，如果k>=splitkey
         int8_t goes_steps = 0;
         _key_t splitkey; Node ** sibling_ptr;
         downroot->get_sibling(splitkey, sibling_ptr);
